@@ -26,39 +26,25 @@ window.addEventListener("scroll", function () {
   window.scrollY >= 10 ? header.classList.add("active") : header.classList.remove("active");
 
 });
-
-
 const goTopBtn = document.querySelector("[data-go-top]");
-
 window.addEventListener("scroll", function () {
-
   window.scrollY >= 500 ? goTopBtn.classList.add("active") : goTopBtn.classList.remove("active");
-
 });
 function search() {
     var input = document.getElementById('searchInput').value;
-    // You can perform any search logic here, such as fetching data from a server
-    // For demonstration purposes, let's just display the search query
     document.getElementById('searchResults').innerHTML = "You searched for: " + input;
 }
-
-
 document.addEventListener("click", function(event) {
   if (!searchBar.contains(event.target) && !searchBtn.contains(event.target)) {
       searchBar.classList.remove("active");
   }
 });
-// Import required modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-
-// Create Express app
 const app = express();
-
-// Set up middleware
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
@@ -66,26 +52,15 @@ app.use(session({
     resave: true,
     saveUninitialized: false
 }));
-
-// Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/myapp', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Define User schema
 const userSchema = new mongoose.Schema({
     email: String,
     password: String
 });
-
 const User = mongoose.model('User', userSchema);
-
-// Routes
-
-// Sign-up page
 app.get('/signup', (req, res) => {
     res.render('signup');
 });
-
-// Sign-up POST handler
 app.post('/signup', async (req, res) => {
     const { email, password } = req.body;
 
@@ -98,13 +73,10 @@ app.post('/signup', async (req, res) => {
         res.status(500).send('An error occurred. Please try again later.');
     }
 });
-
-// Sign-in page
 app.get('/signin', (req, res) => {
     res.render('signin');
 });
 
-// Sign-in POST handler
 app.post('/signin', async (req, res) => {
     const { email, password } = req.body;
 
@@ -120,8 +92,6 @@ app.post('/signin', async (req, res) => {
         res.status(500).send('An error occurred. Please try again later.');
     }
 });
-
-// Dashboard page
 app.get('/dashboard', (req, res) => {
     if (req.session.userId) {
         res.render('dashboard');
@@ -129,8 +99,6 @@ app.get('/dashboard', (req, res) => {
         res.redirect('/signin');
     }
 });
-
-// Logout route
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
@@ -140,8 +108,6 @@ app.get('/logout', (req, res) => {
         }
     });
 });
-
-// Start the server
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
